@@ -101,39 +101,54 @@ export default function FindPage({ authUser }) {
   }, []);
 
   const handleOrder = async (food) => {
-    if (!userId) {
-      alert("Please log in to place an order.");
-      return;
-    }
+  if (!userId) {
+    alert("Please log in to place an order.");
+    return;
+  }
 
-    // ✅ Each food is 40 cedis (fixed)
-    const pricePerMeal = 40;
-    const quantity = 1;
+  // ✅ Check how many meals the user has ordered today
+  const today = new Date();
+  const userOrdersToday = filteredFoods?.filter(o => {
+    const orderDate = new Date(o.date);
+    return (
+      o.userId === userId &&
+      orderDate.getFullYear() === today.getFullYear() &&
+      orderDate.getMonth() === today.getMonth() &&
+      orderDate.getDate() === today.getDate()
+    );
+  });
 
-    // ✅ Match schema exactly
-    const orderData = {
-      userId,
-      mealName: food.name,
-      mealId: food._id,
-      quantity,
-      pricePerMeal,
-      totalPrice: pricePerMeal * quantity,
-      orderedByRole: user?.role || "worker",
-    };
+  if (userOrdersToday?.length >= 2) {
+    alert("You can only order a maximum of 2 meals per day.");
+    return;
+  }
 
-    try {
-      setLoadingFoodId(food._id); // ✅ mark this food as loading
-      const newOrder = await createOrder(orderData);
-      if (newOrder) {
-        navigate("/history");
-      }
-    } catch (err) {
-      console.error("Error creating order:", err);
-      alert("Failed to place order. Please try again.");
-    } finally {
-      setLoadingFoodId(null); // ✅ reset after done
-    }
+  const pricePerMeal = 40;
+  const quantity = 1;
+
+  const orderData = {
+    userId,
+    mealName: food.name,
+    mealId: food._id,
+    quantity,
+    pricePerMeal,
+    totalPrice: pricePerMeal * quantity,
+    orderedByRole: user?.role || "worker",
   };
+
+  try {
+    setLoadingFoodId(food._id);
+    const newOrder = await createOrder(orderData);
+    if (newOrder) {
+      navigate("/history");
+    }
+  } catch (err) {
+    console.error("Error creating order:", err);
+    alert("Failed to place order. Please try again.");
+  } finally {
+    setLoadingFoodId(null);
+  }
+};
 
   return (
     <Box

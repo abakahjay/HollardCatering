@@ -15,7 +15,7 @@ const Messages = () => {
         >
             <Link
                 display={"flex"}
-                to={"/messages"}
+                to={"/feedback"}
                 as={RouterLink}
                 alignItems={"center"}
                 gap={4}
@@ -26,7 +26,7 @@ const Messages = () => {
                 justifyContent={{ base: "center", md: "flex-start" }}
             >
                 <MessagesLogo size={25}/>
-                <Box display={{ base: "none", md: "block" }}>Messages</Box>
+                <Box display={{ base: "none", md: "block" }}>Feedbacks</Box>
             </Link>
         </Tooltip>
     );

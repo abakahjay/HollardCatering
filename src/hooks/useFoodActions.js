@@ -203,6 +203,76 @@ const useFoodActions = () => {
         }
     };
 
+
+    /* -------------------- FEEDBACK ACTION -------------------- */
+    const createFeedback = async ({ userId, orderId, eaten, delivered, comment }) => {
+        setIsLoading(true);
+        try {
+            const res = await fetch(`${apiUrl}/api/v1/feedbacks`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    userId,
+                    orderId,
+                    eaten,
+                    delivered,
+                    comment: comment || "",
+                }),
+            });
+
+            const data = await res.json();
+            if (!res.ok || data.error) throw new Error(data.error || "Failed to submit feedback");
+
+            showToast("Success", "Feedback submitted successfully", "success");
+            return data.feedback;
+        } catch (err) {
+            showToast("Error", err.message, "error");
+            return null;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const fetchFeedbacks = async () => {
+        setIsLoading(true);
+        try {
+            const res = await fetch(`${apiUrl}/api/v1/feedbacks`);
+            const data = await res.json();
+
+            if (!res.ok || data.error) throw new Error(data.error || "Failed to fetch feedbacks");
+            return data.feedbacks || [];
+        } catch (err) {
+            showToast("Error", err.message, "error");
+            return [];
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const updateFeedback = async (feedbackId, updatedData) => {
+        setIsLoading(true);
+        try {
+            const res = await fetch(`${apiUrl}/api/v1/feedbacks/${feedbackId}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(updatedData),
+            });
+
+            const data = await res.json();
+            if (!res.ok || data.error)
+                throw new Error(data.error || "Failed to update feedback");
+
+            showToast("Success", "Feedback updated successfully", "success");
+            return data; // already populated
+        } catch (err) {
+            showToast("Error", err.message, "error");
+            return null;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+
     return {
         isLoading,
         // Orders
@@ -217,6 +287,11 @@ const useFoodActions = () => {
         createMeal,
         updateMeal,
         deleteMeal,
+
+        // Feedback
+        createFeedback,
+        updateFeedback,
+        fetchFeedbacks,
     };
 };
 

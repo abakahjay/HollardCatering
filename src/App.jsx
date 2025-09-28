@@ -17,6 +17,7 @@ import Homepage from "./routes/homePage/Homepage.jsx"
 import Dashboard from "./routes/dashboardPage/Dashboard.jsx";
 import ChatPage from "./routes/chatPage/Chatpage1.jsx";
 import FindPage from "./routes/findPage/FindPage.jsx";
+import FeedbackPage from "./routes/FeedbackPage/FeedbackPage";
 import Control from "./pages/ControlElectrical/Control.jsx";
 
 export default function App(){
@@ -129,6 +130,14 @@ export default function App(){
             element: (
                 <PageLayout authUser={authUser} onLogout={handleLogout}>
                     {authUser ? <MessagesPage authUser={authUser} onLogout={handleLogout} /> : <Navigate to="/auth" onLogout={handleLogout}/>}
+                </PageLayout>
+            ),
+        },
+        {
+            path: '/feedback',
+            element: (
+                <PageLayout authUser={authUser} onLogout={handleLogout}>
+                    {authUser ? <FeedbackPage authUser={authUser} onLogout={handleLogout} /> : <Navigate to="/auth" onLogout={handleLogout}/>}
                 </PageLayout>
             ),
         },

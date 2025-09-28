@@ -33,6 +33,7 @@ const SidebarItems = ({authUser,onLogout}) => {
 			<Notifications authUser={authUser} onLogout={onLogout}/>
 			<CreatePost authUser={authUser} onLogout={onLogout}/>
 			<Messages authUser={authUser} onLogouot={onLogout}/> */}
+			{!isCaterer && <Messages authUser={authUser} onLogouot={onLogout}/>} 
 			<ProfileLink authUser={authUser} onLogout={onLogout} />
 		</>
 	);
