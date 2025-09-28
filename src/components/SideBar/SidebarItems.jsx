@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import CreatePost from "./CreatePost";
 import Home from "./Home";
 import Notifications from "./Notifications";
@@ -10,6 +11,8 @@ import SearchChats from "./SearchChats";
 import HistoryLink from "./HistoryLink"
 
 const SidebarItems = ({authUser,onLogout}) => {
+	const user=authUser.user?authUser.user:authUser
+	const isCaterer = user.role === "caterer";
 	return (
 		<>
 			{/* <ChatGptLogo/>
@@ -20,8 +23,10 @@ const SidebarItems = ({authUser,onLogout}) => {
 			<HideSideBarLogo/>
 			<MicLogo/>
 			<ArrowDropLogo/> */}
-			<NewChat/>
-			<SearchChats authUser={authUser}/>
+			{/* Hide these two if user is Caterer */}
+			{!isCaterer && <NewChat />}         {/* Start Order */}
+			{!isCaterer && <SearchChats authUser={authUser} />} {/* Find Meal */}
+
 			<HistoryLink/>
 			{/* <Home authUser={authUser} onLogout={onLogout} />
 			<Search authUser={authUser} onLogout={onLogout}/>

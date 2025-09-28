@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Box,
         Flex,
         Link,
@@ -5,33 +6,14 @@ import { Box,
         Button,
         chakra,
         Text,
-        ChakraProvider,
-        VStack,
-        Icon,
-        Avatar,
-        useDisclosure,
-        Drawer,
-        DrawerOverlay,
-        DrawerContent,
-        DrawerHeader,
-        DrawerBody,
-        IconButton,
-        Spacer,
-        InputGroup,
-        InputLeftElement,
-        Input,
-        AbsoluteCenter,
-        Circle,
-        HStack,
-        Stack,
     } from '@chakra-ui/react'
 import { Link as RouterLink } from "react-router-dom";
 import { ChatGptLogo1 } from '../../assets/constants.jsx'
 import { BiLogOut } from "react-icons/bi";
-import { FiSearch, FiBookOpen, FiGrid, FiMenu, FiPlus } from 'react-icons/fi';
+// import { FiSearch, FiBookOpen, FiGrid, FiMenu, FiPlus } from 'react-icons/fi';
 // import useLogout from "../../hooks/useLogout";
 import SidebarItems from "./SidebarItems";
-import { useSidebarContext } from './sidebar-context';
+// import { useSidebarContext } from './sidebar-context';
 import useLogout from '../../hooks/useLogout.js';
 const ChatGptLogo = chakra(ChatGptLogo1)
 export function SideBar({ authUser, onLogout }) {
@@ -49,6 +31,7 @@ export function SideBar({ authUser, onLogout }) {
             top={0}
             left={0}
             px={{ base: 2, md: 4 }}
+            backgroundColor={'#4B256C'}
         >
             <Flex direction={'column'} gap={10} w={'full'} height={'full'}>
                 <Flex direction={"row"} gap={2} cursor={"pointer"} alignItems={"center"} display={{ base: "none", md: "flex" }}>
@@ -64,7 +47,7 @@ export function SideBar({ authUser, onLogout }) {
                             bgClip="text"
                             fontWeight="bold"
                         >
-                            GH-GPT
+                            HOLLARD
                         </Text>
                     </Link>
                 </Flex>

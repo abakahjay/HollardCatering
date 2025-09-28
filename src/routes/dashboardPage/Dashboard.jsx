@@ -8,90 +8,65 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { FaMicrophone } from "react-icons/fa";
-import { FiPlus } from "react-icons/fi";
-import { IoIosArrowRoundUp } from "react-icons/io";
+import { BsCartFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import useAiChatActions from "../../hooks/useAiChatActions";
 import useShowToast from "../../hooks/useShowToast";
 import useAuthStore from "../../store/useAuthStore.js";
 import useHandleMessageSend from "../../hooks/useHandleMessageSend";
+
 const Dashboard = () => {
   const [input, setInput] = useState("");
   const [fileInfo, setFileInfo] = useState(null);
   const [transcript, setTranscript] = useState("");
   const fileInputRef = useRef(null);
   const recognitionRef = useRef(null);
-    const authUser= useAuthStore(state=>state.user)
-    const { createUserChat } = useAiChatActions();
-    const showToast = useShowToast();
-    const navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
-  
-    const user=authUser.user?authUser.user:authUser
-    const userId = user._id;
-    const { handleMessageSend } = useHandleMessageSend();
-    const handleNewChat = async (trimmed) => {
-      
-  
-      setLoading(true);
-  
-      try {
-        const chatData = { text: "New Chat" }; // or whatever shape your API expects
-        const newChat = await createUserChat(userId, chatData, true); // Pass true to return newChat
-        if (newChat?._id) {
-          navigate(`/chat/${newChat._id}`);
-        }
-      } catch (err) {
-        showToast("Error", "Could not create chat", "error");
-      } finally {
-        setLoading(false);
+  const authUser = useAuthStore((state) => state.user);
+  const { createUserChat } = useAiChatActions();
+  const showToast = useShowToast();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  const user = authUser.user ? authUser.user : authUser;
+  const userId = user._id;
+  const { handleMessageSend } = useHandleMessageSend();
+
+  const handleNewChat = async (trimmed) => {
+    setLoading(true);
+
+    try {
+      const chatData = { text: "New Food Order" };
+      const newChat = await createUserChat(userId, chatData, true);
+      if (newChat?._id) {
+        navigate(`/chat/${newChat._id}`);
       }
-    };
-  
-  
+    } catch (err) {
+      showToast("Error", "Could not create order", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSend = () => {
-    const trimmed = input.trim();
-    if (!trimmed && !fileInfo) return;
+  const trimmed = input.trim().toLowerCase();
+  if (!trimmed && !fileInfo) return;
 
-    if (trimmed) {
-      localStorage.setItem("dashboardMessage", trimmed);
-    }
+  // Save query to localStorage (for use in Find Meal page)
+  localStorage.setItem("searchItems", JSON.stringify([trimmed]));
 
-    if (fileInfo) {
-      localStorage.setItem("fileInfo", JSON.stringify(fileInfo));
-    }
+  // Clear fileInfo if present
+  if (fileInfo) {
+    localStorage.setItem("fileInfo", JSON.stringify(fileInfo));
+  }
 
-    handleNewChat(trimmed)
-    setInput("");
-    setTranscript("");
-    setFileInfo(null);
-  };
+  // Navigate to Find Meal page with query as URL param
+  navigate(`/findmeal?search=${encodeURIComponent(trimmed)}`);
 
-  const handleFileChange = (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  const size = (file.size / 1024).toFixed(1); // in KB
-
-  const reader = new FileReader();
-  reader.onload = () => {
-    const base64 = reader.result;
-
-    // Save both fileInfo and base64 content
-    const fileDetails = {
-      name: file.name,
-      type: file.type,
-      size: `${size} KB`,
-      base64: base64,
-    };
-
-    setFileInfo(fileDetails);
-    localStorage.setItem("fileInfo", JSON.stringify(fileDetails)); // 🧠 Save to localStorage
-  };
-
-  reader.readAsDataURL(file); // Convert image to Base64 string
+  // Reset input state
+  setInput("");
+  setTranscript("");
+  setFileInfo(null);
 };
-
 
   const startListening = () => {
     if (!("webkitSpeechRecognition" in window)) {
@@ -104,12 +79,10 @@ const Dashboard = () => {
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
-    recognition.onstart = () => {};
     recognition.onresult = (event) => {
       const result = event.results[0][0].transcript;
       setTranscript(result);
     };
-    recognition.onend = () => {};
 
     recognition.start();
     recognitionRef.current = recognition;
@@ -127,33 +100,72 @@ const Dashboard = () => {
   };
 
   return (
-    <Flex h="100vh" bg="#000" justify="center" align="center" px={4}>
-      <Box w={{ base: "100%", md: "60%" }} maxW="700px">
-        <Text fontSize="2xl" fontWeight="bold" mb={6} color="white" textAlign="center">
-          What can I help with?
+    <Flex
+      h="100vh"
+      justify="center"
+      align="center"
+      px={4}
+      position="relative"
+      bg="#4B226F" // Hollard Purple
+      overflow="hidden"
+    >
+      {/* White curve at bottom */}
+      <Box
+        position="absolute"
+        bottom="0"
+        left="0"
+        w="100%"
+        h="25vh"
+        bg="white"
+        borderTopLeftRadius="50% 20%"
+        borderTopRightRadius="50% 20%"
+        zIndex={0}
+      />
+
+      {/* Main content on top */}
+      <Box w={{ base: "100%", md: "60%" }} maxW="700px" zIndex={1}>
+        <Text
+          fontSize="2xl"
+          fontWeight="bold"
+          mb={6}
+          color="#F15A22"
+          textAlign="center"
+        >
+          🍔 What would you like to eat today?
         </Text>
 
+        {/* Quick food suggestions */}
+        <Flex justify="center" gap={3} mb={4} wrap="wrap">
+          {["Waakye", "Jollof", "Burger", "Kenkey", "Banku"].map(
+            (food) => (
+              <Button
+                key={food}
+                size="sm"
+                bg="#F15A22"
+                color="white"
+                _hover={{ bg: "#d94e1f" }}
+                onClick={() => setInput(food)}
+              >
+                {food}
+              </Button>
+            )
+          )}
+        </Flex>
+
+        {/* Input + Mic + Send */}
         <Flex
           direction="column"
-          bg="#121212"
+          bg="rgba(75, 37, 108, 0.85)"
           borderRadius="xl"
           px={4}
           py={4}
           boxShadow="lg"
         >
-          {fileInfo && (
-            <Box mb={3} color="gray.300" fontSize="sm">
-              <Text>📄 {fileInfo.name}</Text>
-              <Text>Type: {fileInfo.type || "Unknown"}</Text>
-              <Text>Size: {fileInfo.size}</Text>
-            </Box>
-          )}
-
           {transcript && (
             <Flex
               justify="space-between"
               align="center"
-              bg="gray.700"
+              bg="whiteAlpha.300"
               px={3}
               py={2}
               borderRadius="md"
@@ -189,27 +201,11 @@ const Dashboard = () => {
             borderRadius="md"
             px={2}
             py={2}
-            border="1px solid gray"
+            border="1px solid #EDE6F3"
             bg="transparent"
           >
-            <input
-              type="file"
-              hidden
-              ref={fileInputRef}
-              onChange={handleFileChange}
-            />
-
-            <IconButton
-              icon={<FiPlus />}
-              variant="ghost"
-              aria-label="Add File"
-              fontSize="lg"
-              color="gray.300"
-              onClick={() => fileInputRef.current.click()}
-            />
-
             <Textarea
-              placeholder="Ask anything..."
+              placeholder="Search meals or type your order..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => {
@@ -225,55 +221,36 @@ const Dashboard = () => {
               bg="transparent"
               border="1px solid transparent"
               flex={1}
-              whiteSpace="pre-wrap"
-              _focus={{
-                borderColor: "white",
-              }}
+              _focus={{ borderColor: "#F15A22" }}
               css={{
-                "&::-webkit-scrollbar": {
-                  width: "4px",
-                },
+                "&::-webkit-scrollbar": { width: "4px" },
                 "&::-webkit-scrollbar-thumb": {
-                  background: "#888",
+                  background: "#F15A22",
                   borderRadius: "6px",
                 },
               }}
             />
 
+            {/* Mic Button */}
             <IconButton
               icon={<FaMicrophone />}
               variant="ghost"
               aria-label="Mic"
-              color="gray.300"
+              color="white"
               bg="transparent"
-              _hover={{ bg: "gray.700" }}
+              _hover={{ bg: "#6A3C8C" }}
               onClick={startListening}
             />
 
+            {/* Send/Order Button */}
             <IconButton
-              icon={
-                <Box transform="translateY(-2px)">
-                  <IoIosArrowRoundUp style={{ fontSize: "28px", fontWeight: "bold" }} />
-                  <Box
-                    w="2px"
-                    h="8px"
-                    bg={input.trim() || fileInfo ? "black" : "gray.400"}
-                    mx="auto"
-                    mt="-4px"
-                    borderRadius="full"
-                  />
-                </Box>
-              }
-              aria-label="Send"
+              icon={<BsCartFill />}
+              aria-label="Send Order"
               onClick={handleSend}
               isRound
-              bg={input.trim() || fileInfo ? "white" : "transparent"}
-              color={input.trim() || fileInfo ? "black" : "gray.400"}
-              _hover={
-                input.trim() || fileInfo
-                  ? { bg: "whiteAlpha.800" }
-                  : { bg: "gray.700" }
-              }
+              bg={input.trim() ? "#F15A22" : "transparent"}
+              color={input.trim() ? "white" : "gray.400"}
+              _hover={input.trim() ? { bg: "#d94e1f" } : { bg: "gray.700" }}
             />
           </Flex>
         </Flex>

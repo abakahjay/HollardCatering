@@ -470,7 +470,7 @@ const CopyButton = ({ code }) => {
 
 
   return (
-    <Flex direction="column" h="100vh" bg="#000" color="white">
+    <Flex direction="column" h="100vh" bg="#F8F5F9" color="white">
       <VStack
         spacing={4}
         p={4}

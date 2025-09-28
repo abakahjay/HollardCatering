@@ -76,9 +76,9 @@ const Navbar = ({authUser} ) => {
 			>
 				{/* Logo + Title */}
 				<Flex direction="row" gap={2} alignItems="center">
-					<RouterLink to="/" pl={2}>
+					{/* <RouterLink to="/" pl={2}>
 						<ChatGptLogo boxSize="40px" />
-					</RouterLink>
+					</RouterLink> */}
 
 					<RouterLink to="/" pl={2}>
 						<Text
@@ -89,7 +89,7 @@ const Navbar = ({authUser} ) => {
 							fontWeight="bold"
 							mx={2}
 						>
-							GH-GPT
+							HOLLARD
 						</Text>
 					</RouterLink>
 				</Flex>

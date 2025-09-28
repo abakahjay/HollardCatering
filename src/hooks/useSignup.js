@@ -10,8 +10,8 @@ const useSignup = () => {
     const isLoading = useAuthStore((state) => state.isLoading); // Zustand loading state
     const error = useAuthStore((state) => state.error); // Zustand error state
 
-    const signup = async (email, password,firstName,lastName,username) => {
-        if (!email || !password || !firstName || !lastName || !username) {
+    const signup = async (email, password,firstName,lastName,username,role) => {
+        if (!email || !password || !firstName || !lastName || !username|| !role) {
             return showToast("Error", "Please fill all the fields", "error");
         }
 
@@ -24,6 +24,7 @@ const useSignup = () => {
                 firstName,
                 lastName,
                 username,
+                role
             });
 
             // Save user info to Zustand and local storage

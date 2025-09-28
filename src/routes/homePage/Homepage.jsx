@@ -15,23 +15,13 @@ const Homepage = ({ authUser }) => {
       <div className="homepage" >
         <img src="/orbital.png" alt="" className="orbital" />
         <div className="left">
-          <h1>GH-GPT</h1>
-          <h2>Boost Creativity. Work Smarter.</h2>
+          <h1>Hollard Catering</h1>
+          <h2>Order Smarter. Waste Less.</h2>
           <h3>
-            Your intelligent assistant for writing, coding, and idea generation —
-            designed to help you move faster and think bigger.
+            A simple and reliable food ordering system for Hollard employees —
+            choose your meals, track what you’ve collected, and help reduce food waste
+            while saving the company money.
           </h3>
-          {/* <ScrambledText
-              className="scrambled-text-demo"
-              radius={100}
-              duration={1.2}
-              speed={0.5}
-              scrambleChars='.:'
-            >
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Similique pariatur dignissimos porro eius quam doloremque
-              et enim velit nobis maxime.
-            </ScrambledText> */}
           <Link to="/dashboard">Get Started</Link>
         </div>
         <div className="right">
@@ -39,124 +29,21 @@ const Homepage = ({ authUser }) => {
             <div className="bgContainer">
               <div className="bg"></div>
             </div>
-            <img src="/bot.png" alt="" className="bot" />
-            <div className="chat">
-              <img
-                src={
-                  typingStatus === "human1"
-                    ? "/human1.jpeg"
-                    : typingStatus === "human2"
-                      ? "/human2.jpeg"
-                      : "bot.png"
-                }
-                alt=""
-              />
-              <TypeAnimation
-                sequence={[
-                  // Productivity
-                  "User: Summarize this 10-page PDF for me.",
-                  2000,
-                  () => setTypingStatus("bot"),
-                  "GH-GPT: Done. Here's a 3-paragraph summary with key bullet points.",
-                  2000,
-                  () => setTypingStatus("human2"),
-                  "User: Can you rewrite this in simpler English?",
-                  2000,
-                  () => setTypingStatus("bot"),
-                  "GH-GPT: Sure. Here's the revised version with improved clarity.",
-                  2000,
-
-                  // Developer
-                  () => setTypingStatus("human1"),
-                  "User: Convert this Python function to JavaScript.",
-                  2000,
-                  () => setTypingStatus("bot"),
-                  "GH-GPT: Converted! Here's the JavaScript version of your code.",
-                  2000,
-                  () => setTypingStatus("human2"),
-                  "User: Explain how OAuth 2.0 works in simple terms.",
-                  2000,
-                  () => setTypingStatus("bot"),
-                  "GH-GPT: It's like a valet key to access data without sharing passwords.",
-                  2000,
-
-                  // Academic
-                  () => setTypingStatus("human1"),
-                  "Student: Can you explain Newton's second law?",
-                  2000,
-                  () => setTypingStatus("bot"),
-                  "GH-GPT: Sure! F = ma — force equals mass times acceleration.",
-                  2000,
-                  () => setTypingStatus("human2"),
-                  "Student: Help me cite this article in APA.",
-                  2000,
-                  () => setTypingStatus("bot"),
-                  "GH-GPT: Here's the correct APA format for your reference.",
-                  2000,
-
-                  // Business
-                  () => setTypingStatus("human1"),
-                  "Manager: Create a weekly meeting agenda.",
-                  2000,
-                  () => setTypingStatus("bot"),
-                  "GH-GPT: Here's a structured agenda with time slots.",
-                  2000,
-                  () => setTypingStatus("human2"),
-                  "Manager: Write a job description for a React developer.",
-                  2000,
-                  () => setTypingStatus("bot"),
-                  "GH-GPT: Here's a complete job posting template.",
-                  2000,
-
-                  // Creative
-                  () => setTypingStatus("human1"),
-                  "Writer: Start a short story about a lost robot.",
-                  2000,
-                  () => setTypingStatus("bot"),
-                  "GH-GPT: In a forgotten scrapyard, a robot blinked awake for the first time...",
-                  2000,
-                  () => setTypingStatus("human2"),
-                  "Writer: Suggest 5 titles for a sci-fi novel.",
-                  2000,
-                  () => setTypingStatus("bot"),
-                  "GH-GPT: Here's a list of futuristic and engaging titles.",
-                  2000,
-
-                  // Customer Service
-                  () => setTypingStatus("human1"),
-                  "User: What’s your refund policy?",
-                  2000,
-                  () => setTypingStatus("bot"),
-                  "GH-GPT: You can request a full refund within 30 days — no questions asked.",
-                  2000,
-                  () => setTypingStatus("human2"),
-                  "User: I need help resetting my password.",
-                  2000,
-                  () => setTypingStatus("bot"),
-                  "GH-GPT: Follow this secure link to reset it instantly.",
-                  2000,
-                ]}
-                wrapper="span"
-                repeat={Infinity}
-                cursor={true}
-                omitDeletionAnimation={true}
-              />
-
-            </div>
+            <img src="/hero-img.png" alt="" className="bot" />
           </div>
         </div>
         <div className="terms">
-          <img src="/fav.svg" alt="" />
+          <img src="favicon.png" alt="" />
           <div className="links">
             <Link to="/">Terms of Service</Link>
             <span>|</span>
             <Link to="/">Privacy Policy</Link>
           </div>
           <Box fontSize={12} color={'gray.500'} mt={5}>
-              Copyright &copy; {new Date().getFullYear()} Built By{" "}
-              <Link to='https://abakahjay.github.io/web_project/' target='_blank' color='blue.500' fontSize={14} alignSelf={'start'}>
-                          Abakah Joshua
-              </Link>
+            Copyright &copy; {new Date().getFullYear()} Built By{" "}
+            <Link to='https://abakahjay.github.io/web_project/' target='_blank' color='blue.500' fontSize={14} alignSelf={'start'}>
+              Abakah Joshua
+            </Link>
           </Box>
         </div>
       </div>

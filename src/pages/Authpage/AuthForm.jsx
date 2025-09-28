@@ -26,7 +26,7 @@ export function AuthForm({ onAuth }) {
                             whiteSpace="nowrap"
                             gap={2}
                         >
-                            <ChatGptLogos boxSize='48px' />
+                            {/* <ChatGptLogos boxSize='48px' /> */}
                             <Text
                                 cursor="pointer"
                                 
@@ -36,7 +36,7 @@ export function AuthForm({ onAuth }) {
                                 bgClip="text"
                                 fontWeight="bold"
                                 >
-                                GH-GPT
+                                HOLLARD CATERING
                             </Text>
                         </Link>
 

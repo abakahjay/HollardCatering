@@ -16,6 +16,7 @@ import Try1 from "./components/test/Try1.jsx";
 import Homepage from "./routes/homePage/Homepage.jsx"
 import Dashboard from "./routes/dashboardPage/Dashboard.jsx";
 import ChatPage from "./routes/chatPage/Chatpage1.jsx";
+import FindPage from "./routes/findPage/FindPage.jsx";
 import Control from "./pages/ControlElectrical/Control.jsx";
 
 export default function App(){
@@ -128,6 +129,14 @@ export default function App(){
             element: (
                 <PageLayout authUser={authUser} onLogout={handleLogout}>
                     {authUser ? <MessagesPage authUser={authUser} onLogout={handleLogout} /> : <Navigate to="/auth" onLogout={handleLogout}/>}
+                </PageLayout>
+            ),
+        },
+        {
+            path: '/findmeal',
+            element: (
+                <PageLayout authUser={authUser} onLogout={handleLogout}>
+                    {authUser ? <FindPage authUser={authUser} onLogout={handleLogout} /> : <Navigate to="/auth" onLogout={handleLogout}/>}
                 </PageLayout>
             ),
         },

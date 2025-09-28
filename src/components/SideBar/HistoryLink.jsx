@@ -37,7 +37,7 @@ const HistoryLink = () => {
                     <path d="M4 24C4 35.0457 12.9543 44 24 44V44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C16.598 4 10.1351 8.02111 6.67677 13.9981" stroke="rgb(245, 245, 245)" strokeWidth='3' strokelinecap="round" strokelinejoin="round" />
                     <path d="M24.005 12L24.0038 24.0088L32.4832 32.4882" stroke="rgb(245, 245, 245)" strokeWidth='3' strokelinecap="round" strokelinejoin="round" />
                 </svg> */}
-                <Box display={{ base: "none", md: "block" }}>History</Box>
+                <Box display={{ base: "none", md: "block" }}>My Orders</Box>
             </Link>
         </Tooltip>
     );

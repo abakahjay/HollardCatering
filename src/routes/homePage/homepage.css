@@ -4,6 +4,7 @@
   gap: 100px;
   height: 100%;
   justify-content: center;
+  /* background: linear-gradient(90deg, #4a2767 43.62%, #6e5285 86.27%); */
 
   @media screen and (max-width: 1024px) {
     flex-direction: column;
@@ -195,3 +196,31 @@
     transform: translateX(-50%);
   }
 }
+
+.terms {
+  gap: 10px;
+  font-size: 12px;
+}
+
+h1 {
+  font-size: 120px; /* default for desktops */
+
+  @media screen and (max-width: 1280px) {
+    font-size: 64px;
+  }
+  @media screen and (max-width: 768px) {
+    font-size: 48px;
+  }
+}
+
+a {
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background-color: white;
+    color: #217bfe;
+    box-shadow: 0 0 8px rgba(33, 123, 254, 0.5);
+  }
+}
+
+
