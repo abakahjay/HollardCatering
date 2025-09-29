@@ -10,11 +10,11 @@ import { extendTheme } from "@chakra-ui/react";
 
 //We can also import React and ReactDOM from the modules above without the curly braises
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js').then((registration) => {
-    console.log('Service Worker registered:', registration);
-  }).catch((error) => {
-    console.error('Service Worker registration failed:', error);
-  });
+    navigator.serviceWorker.register('/sw.js').then((registration) => {
+        console.log('Service Worker registered:', registration);
+    }).catch((error) => {
+        console.error('Service Worker registration failed:', error);
+    });
 }
 
 
@@ -85,11 +85,11 @@ const theme = extendTheme({
 });
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <ChakraProvider theme={theme}>
-      {/* THis is for Creating Routes and Pages */}
-      <App/>
-    </ChakraProvider>
-  </StrictMode>
+    <StrictMode>
+        <ChakraProvider theme={theme}>
+            {/* THis is for Creating Routes and Pages */}
+            <App />
+        </ChakraProvider>
+    </StrictMode>
 )
 console.log('Hello world')
