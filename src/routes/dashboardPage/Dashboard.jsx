@@ -31,59 +31,33 @@ const Dashboard = () => {
   const userId = user._id;
   const { handleMessageSend } = useHandleMessageSend();
 
-  const handleNewChat = async (trimmed) => {
-    setLoading(true);
-
-    try {
-      const chatData = { text: "New Food Order" };
-      const newChat = await createUserChat(userId, chatData, true);
-      if (newChat?._id) {
-        navigate(`/chat/${newChat._id}`);
-      }
-    } catch (err) {
-      showToast("Error", "Could not create order", "error");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleSend = () => {
-  const trimmed = input.trim().toLowerCase();
-  if (!trimmed && !fileInfo) return;
+    const trimmed = input.trim().toLowerCase();
+    if (!trimmed && !fileInfo) return;
 
-  // Save query to localStorage (for use in Find Meal page)
-  localStorage.setItem("searchItems", JSON.stringify([trimmed]));
-
-  // Clear fileInfo if present
-  if (fileInfo) {
-    localStorage.setItem("fileInfo", JSON.stringify(fileInfo));
-  }
-
-  // Navigate to Find Meal page with query as URL param
-  navigate(`/findmeal?search=${encodeURIComponent(trimmed)}`);
-
-  // Reset input state
-  setInput("");
-  setTranscript("");
-  setFileInfo(null);
-};
+    localStorage.setItem("searchItems", JSON.stringify([trimmed]));
+    if (fileInfo) {
+      localStorage.setItem("fileInfo", JSON.stringify(fileInfo));
+    }
+    navigate(`/findmeal?search=${encodeURIComponent(trimmed)}`);
+    setInput("");
+    setTranscript("");
+    setFileInfo(null);
+  };
 
   const startListening = () => {
     if (!("webkitSpeechRecognition" in window)) {
       alert("Speech recognition not supported in this browser.");
       return;
     }
-
     const recognition = new window.webkitSpeechRecognition();
     recognition.lang = "en-US";
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
-
     recognition.onresult = (event) => {
       const result = event.results[0][0].transcript;
       setTranscript(result);
     };
-
     recognition.start();
     recognitionRef.current = recognition;
   };
@@ -106,60 +80,65 @@ const Dashboard = () => {
       align="center"
       px={4}
       position="relative"
-      bg="#4B226F" // Hollard Purple
+      bgGradient="linear(to-br, #4B226F, #2D0A45)"
       overflow="hidden"
     >
-      {/* White curve at bottom */}
-      <Box
-        position="absolute"
-        bottom="0"
-        left="0"
-        w="100%"
-        h="25vh"
-        bg="white"
-        borderTopLeftRadius="50% 20%"
-        borderTopRightRadius="50% 20%"
-        zIndex={0}
-      />
+      {/* Smooth SVG curve at bottom */}
+      <Box position="absolute" bottom="0" w="100%" zIndex={0}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1440 320"
+          preserveAspectRatio="none"
+          style={{ display: "block", width: "100%", height: "180px" }}
+        >
+          <path
+            fill="white"
+            d="M0,224L60,208C120,192,240,160,360,170.7C480,181,600,235,720,250.7C840,267,960,245,1080,213.3C1200,181,1320,139,1380,117.3L1440,96V320H0Z"
+          />
+        </svg>
+      </Box>
 
-      {/* Main content on top */}
+      {/* Main content */}
       <Box w={{ base: "100%", md: "60%" }} maxW="700px" zIndex={1}>
         <Text
-          fontSize="2xl"
-          fontWeight="bold"
+          fontSize={{ base: "xl", md: "2xl" }}
+          fontWeight="extrabold"
           mb={6}
-          color="#F15A22"
+          color="#F15A22" // Hollard orange
           textAlign="center"
+          letterSpacing="0.5px"
         >
           🍔 What would you like to eat today?
         </Text>
 
-        {/* Quick food suggestions */}
-        <Flex justify="center" gap={3} mb={4} wrap="wrap">
-          {["Waakye", "Jollof", "Burger", "Kenkey", "Banku"].map(
-            (food) => (
-              <Button
-                key={food}
-                size="sm"
-                bg="#F15A22"
-                color="white"
-                _hover={{ bg: "#d94e1f" }}
-                onClick={() => setInput(food)}
-              >
-                {food}
-              </Button>
-            )
-          )}
+        {/* Food suggestions */}
+        <Flex justify="center" gap={3} mb={6} wrap="wrap">
+          {["Waakye", "Jollof", "Beans", "Kenkey", "Banku"].map((food) => (
+            <Button
+              key={food}
+              size="md"
+              bg="#F15A22"
+              color="white"
+              px={5}
+              borderRadius="full"
+              _hover={{ bg: "#d94e1f", transform: "scale(1.05)" }}
+              transition="all 0.2s ease-in-out"
+              onClick={() => setInput(food)}
+            >
+              {food}
+            </Button>
+          ))}
         </Flex>
 
-        {/* Input + Mic + Send */}
+        {/* Input box with mic + send */}
         <Flex
           direction="column"
+          borderRadius="2xl"
+          px={5}
+          py={5}
           bg="rgba(75, 37, 108, 0.85)"
-          borderRadius="xl"
-          px={4}
-          py={4}
-          boxShadow="lg"
+          boxShadow="0 8px 24px rgba(0,0,0,0.25)"
+          backdropFilter="blur(10px)"
         >
           {transcript && (
             <Flex
@@ -195,15 +174,7 @@ const Dashboard = () => {
             </Flex>
           )}
 
-          <Flex
-            align="center"
-            gap={2}
-            borderRadius="md"
-            px={2}
-            py={2}
-            border="1px solid #EDE6F3"
-            bg="transparent"
-          >
+          <Flex align="center" gap={2}>
             <Textarea
               placeholder="Search meals or type your order..."
               value={input}
@@ -219,9 +190,13 @@ const Dashboard = () => {
               overflowY="auto"
               color="white"
               bg="transparent"
-              border="1px solid transparent"
+              border="1px solid rgba(255,255,255,0.2)"
+              borderRadius="xl"
               flex={1}
-              _focus={{ borderColor: "#F15A22" }}
+              _focus={{
+                borderColor: "#F15A22",
+                boxShadow: "0 0 0 1px #F15A22",
+              }}
               css={{
                 "&::-webkit-scrollbar": { width: "4px" },
                 "&::-webkit-scrollbar-thumb": {
@@ -231,26 +206,23 @@ const Dashboard = () => {
               }}
             />
 
-            {/* Mic Button */}
             <IconButton
               icon={<FaMicrophone />}
-              variant="ghost"
               aria-label="Mic"
+              variant="ghost"
               color="white"
-              bg="transparent"
-              _hover={{ bg: "#6A3C8C" }}
+              _hover={{ bg: "whiteAlpha.200" }}
               onClick={startListening}
             />
 
-            {/* Send/Order Button */}
             <IconButton
               icon={<BsCartFill />}
               aria-label="Send Order"
               onClick={handleSend}
               isRound
-              bg={input.trim() ? "#F15A22" : "transparent"}
-              color={input.trim() ? "white" : "gray.400"}
-              _hover={input.trim() ? { bg: "#d94e1f" } : { bg: "gray.700" }}
+              bg={input.trim() ? "#F15A22" : "whiteAlpha.200"}
+              color="white"
+              _hover={input.trim() ? { bg: "#d94e1f" } : { bg: "whiteAlpha.300" }}
             />
           </Flex>
         </Flex>

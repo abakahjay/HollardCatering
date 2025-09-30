@@ -45,7 +45,6 @@ export default function FeedbackPage({ authUser }) {
       }
 
       allFeedbacks = await fetchFeedbacks();
-
       setOrders(allOrders);
       setFeedbacks(allFeedbacks);
     };
@@ -53,78 +52,85 @@ export default function FeedbackPage({ authUser }) {
     loadData();
   }, [userId, role]);
 
-  const getFeedbackForOrder = (orderId) => {
-    return feedbacks.find(f => f.orderId && f.orderId._id === orderId);
-  };
-
+  const getFeedbackForOrder = (orderId) =>
+    feedbacks.find((f) => f.orderId && f.orderId._id === orderId);
 
   const handleSaveFeedback = async (orderId) => {
-  const fbData = editing[orderId];
-  if (!fbData) return;
+    const fbData = editing[orderId];
+    if (!fbData) return;
 
-  let savedFeedback;
-  const existing = getFeedbackForOrder(orderId);
+    let savedFeedback;
+    const existing = getFeedbackForOrder(orderId);
 
-  if (existing) {
-    savedFeedback = await updateFeedback(existing._id, fbData);
-  } else {
-    savedFeedback = await createFeedback({
-      userId,
-      orderId,
-      eaten: fbData.eaten,
-      delivered: fbData.delivered,
-      comment: fbData.comment || "",
-    });
-  }
+    if (existing) {
+      savedFeedback = await updateFeedback(existing._id, fbData);
+    } else {
+      savedFeedback = await createFeedback({
+        userId,
+        orderId,
+        eaten: fbData.eaten,
+        delivered: fbData.delivered,
+        comment: fbData.comment || "",
+      });
+    }
 
-  if (savedFeedback) {
-    const updatedFeedback = {
-      ...savedFeedback,
-      orderId: { _id: orderId, ...savedFeedback.orderId },
-      userId: savedFeedback.userId || {
-        _id: user._id,
-        email: user.email,
-        name: `${user.firstName || ""} ${user.lastName || ""}`.trim(),
-      },
-    };
+    if (savedFeedback) {
+      const updatedFeedback = {
+        ...savedFeedback,
+        orderId: { _id: orderId, ...savedFeedback.orderId },
+        userId: savedFeedback.userId || {
+          _id: user._id,
+          email: user.email,
+          name: `${user.firstName || ""} ${user.lastName || ""}`.trim(),
+        },
+      };
 
-    setFeedbacks((prev) => {
-      const hasFeedback = prev.some((f) => f.orderId && f.orderId._id === orderId);
-      return hasFeedback
-        ? prev.map((f) =>
-            f.orderId && f.orderId._id === orderId ? updatedFeedback : f
-          )
-        : [...prev, updatedFeedback];
-    });
+      setFeedbacks((prev) => {
+        const hasFeedback = prev.some(
+          (f) => f.orderId && f.orderId._id === orderId
+        );
+        return hasFeedback
+          ? prev.map((f) =>
+              f.orderId && f.orderId._id === orderId ? updatedFeedback : f
+            )
+          : [...prev, updatedFeedback];
+      });
 
-    setEditing((prev) => {
-      const newEditing = { ...prev };
-      delete newEditing[orderId];
-      return newEditing;
-    });
-  }
-};
-
-
+      setEditing((prev) => {
+        const newEditing = { ...prev };
+        delete newEditing[orderId];
+        return newEditing;
+      });
+    }
+  };
 
   return (
-    <Box minH="100vh" p={5} bg="#111" color="white">
-      <Center mb={10}>
-        <Heading as="h1" size="2xl" color="yellow.400">
-          {role === "admin" ? "All Orders & Feedbacks" : "My Orders & Feedbacks"}
+    <Box
+      minH="100vh"
+      p={8}
+      bgGradient="linear(to-br, #4B226F, #2D0A45)"
+      color="white"
+    >
+      <Center mb={12}>
+        <Heading as="h1" size="2xl" color="#F15A22" fontWeight="extrabold">
+          {role === "admin"
+            ? "All Orders & Feedbacks"
+            : "My Orders & Feedbacks"}
         </Heading>
       </Center>
 
       {isLoading ? (
         <Center>
-          <Spinner size="xl" color="yellow.400" />
+          <Spinner size="xl" color="#F15A22" thickness="4px" />
         </Center>
       ) : orders.length === 0 ? (
         <Center>
-          <Text fontSize="xl">No orders found.</Text>
+          <Text fontSize="lg" color="gray.300">
+            No orders found.
+          </Text>
         </Center>
       ) : (
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={8}>
           {orders
             .slice()
             .reverse()
@@ -132,21 +138,34 @@ export default function FeedbackPage({ authUser }) {
               const fb = getFeedbackForOrder(order._id) || null;
               const isEditing = Boolean(editing[order._id]);
 
-
               return (
-                <Box key={order._id} p={5} borderRadius="md" bg="gray.800">
+                <Box
+                  key={order._id}
+                  p={6}
+                  borderRadius="2xl"
+                  bg="rgba(255, 255, 255, 0.05)"
+                  boxShadow="xl"
+                  backdropFilter="blur(10px)"
+                  transition="transform 0.2s"
+                  _hover={{ transform: "translateY(-4px)" }}
+                >
                   <VStack align="start" spacing={3}>
                     <HStack w="100%" justify="space-between">
-                      <Text fontWeight="bold" color="yellow.400">
+                      <Text fontWeight="bold" color="#F15A22">
                         {order.mealId?.name || order.mealName} × {order.quantity}
                       </Text>
                       <Badge
+                        px={3}
+                        py={1}
+                        borderRadius="full"
+                        textTransform="capitalize"
+                        fontSize="0.8rem"
                         colorScheme={
                           order.status === "pending"
                             ? "yellow"
                             : order.status === "preparing"
-                              ? "blue"
-                              : "green"
+                            ? "blue"
+                            : "green"
                         }
                       >
                         {order.status}
@@ -155,8 +174,8 @@ export default function FeedbackPage({ authUser }) {
 
                     {role === "admin" && order.userId && (
                       <Text fontSize="sm" color="cyan.300">
-                        Ordered by: {order.userId.firstName} {order.userId.lastName} (
-                        {order.userId.email})
+                        Ordered by: {order.userId.firstName}{" "}
+                        {order.userId.lastName} ({order.userId.email})
                       </Text>
                     )}
 
@@ -167,7 +186,13 @@ export default function FeedbackPage({ authUser }) {
                     </Text>
 
                     {/* Feedback Section */}
-                    <Box mt={2} p={3} bg="gray.900" borderRadius="md" w="100%">
+                    <Box
+                      mt={3}
+                      p={4}
+                      bg="rgba(255,255,255,0.08)"
+                      borderRadius="lg"
+                      w="100%"
+                    >
                       {(role === "worker" || role === "admin") && (
                         <>
                           {isEditing ? (
@@ -176,7 +201,16 @@ export default function FeedbackPage({ authUser }) {
                                 placeholder="Eaten?"
                                 size="sm"
                                 mb={2}
-                                value={editing[order._id]?.eaten || fb?.eaten || ""}
+                                borderRadius="md"
+                                bg="whiteAlpha.100"
+                                border="1px solid transparent"
+                                _focus={{
+                                  borderColor: "#F15A22",
+                                  boxShadow: "0 0 0 1px #F15A22",
+                                }}
+                                value={
+                                  editing[order._id]?.eaten || fb?.eaten || ""
+                                }
                                 onChange={(e) =>
                                   setEditing((prev) => ({
                                     ...prev,
@@ -191,7 +225,18 @@ export default function FeedbackPage({ authUser }) {
                                 placeholder="Delivered?"
                                 size="sm"
                                 mb={2}
-                                value={editing[order._id]?.delivered || fb?.delivered || ""}
+                                borderRadius="md"
+                                bg="whiteAlpha.100"
+                                border="1px solid transparent"
+                                _focus={{
+                                  borderColor: "#F15A22",
+                                  boxShadow: "0 0 0 1px #F15A22",
+                                }}
+                                value={
+                                  editing[order._id]?.delivered ||
+                                  fb?.delivered ||
+                                  ""
+                                }
                                 onChange={(e) =>
                                   setEditing((prev) => ({
                                     ...prev,
@@ -205,8 +250,19 @@ export default function FeedbackPage({ authUser }) {
                               <Textarea
                                 placeholder="Comment (optional)"
                                 size="sm"
-                                mb={2}
-                                value={editing[order._id]?.comment || fb?.comment || ""}
+                                mb={3}
+                                borderRadius="md"
+                                bg="whiteAlpha.100"
+                                border="1px solid transparent"
+                                _focus={{
+                                  borderColor: "#F15A22",
+                                  boxShadow: "0 0 0 1px #F15A22",
+                                }}
+                                value={
+                                  editing[order._id]?.comment ||
+                                  fb?.comment ||
+                                  ""
+                                }
                                 onChange={(e) =>
                                   setEditing((prev) => ({
                                     ...prev,
@@ -218,8 +274,10 @@ export default function FeedbackPage({ authUser }) {
                                 }
                               />
                               <Button
-                                colorScheme="green"
+                                colorScheme="orange"
                                 size="sm"
+                                borderRadius="full"
+                                fontWeight="bold"
                                 onClick={() => handleSaveFeedback(order._id)}
                               >
                                 Save Feedback
@@ -232,14 +290,20 @@ export default function FeedbackPage({ authUser }) {
                               {fb.comment && <Text>Comment: {fb.comment}</Text>}
                               {role === "admin" && fb.userId && (
                                 <Text fontSize="sm" color="gray.400">
-  By: {fb.userId.firstName || ""} {fb.userId.lastName || ""} ({fb.userId.email})
-</Text>
-
+                                  By: {fb.userId.firstName || ""}{" "}
+                                  {fb.userId.lastName || ""} ({fb.userId.email})
+                                </Text>
                               )}
                               <Button
                                 size="sm"
+                                mt={2}
+                                colorScheme="purple"
+                                borderRadius="full"
                                 onClick={() =>
-                                  setEditing((prev) => ({ ...prev, [order._id]: { ...fb } }))
+                                  setEditing((prev) => ({
+                                    ...prev,
+                                    [order._id]: { ...fb },
+                                  }))
                                 }
                               >
                                 Edit Feedback
@@ -248,8 +312,13 @@ export default function FeedbackPage({ authUser }) {
                           ) : (
                             <Button
                               size="sm"
+                              colorScheme="purple"
+                              borderRadius="full"
                               onClick={() =>
-                                setEditing((prev) => ({ ...prev, [order._id]: {} }))
+                                setEditing((prev) => ({
+                                  ...prev,
+                                  [order._id]: {},
+                                }))
                               }
                             >
                               Add Feedback
@@ -257,7 +326,6 @@ export default function FeedbackPage({ authUser }) {
                           )}
                         </>
                       )}
-
                     </Box>
                   </VStack>
                 </Box>

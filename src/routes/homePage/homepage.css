@@ -4,7 +4,8 @@
   gap: 100px;
   height: 100%;
   justify-content: center;
-  /* background: linear-gradient(90deg, #4a2767 43.62%, #6e5285 86.27%); */
+  /* background: linear-gradient(90deg, #4B226F 43.62%, #2D0A45 86.27%); */
+  /* bgGradient="linear(to-br, #4B226F, #2D0A45)" */
 
   @media screen and (max-width: 1024px) {
     flex-direction: column;

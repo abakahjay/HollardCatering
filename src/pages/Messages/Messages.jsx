@@ -175,23 +175,23 @@ const MessagesPage = ({ authUser }) => {
   }, [userId, isAdmin, isWorker]);
 
   const handleDelete = async (orderId) => {
-  if (!window.confirm("Are you sure you want to delete this order?")) return;
-  const success = await deleteOrder(orderId);
-  if (success) {
-    setOrders((prev) => {
-      const updatedOrders = prev.filter((o) => o._id !== orderId);
+    if (!window.confirm("Are you sure you want to delete this order?")) return;
+    const success = await deleteOrder(orderId);
+    if (success) {
+      setOrders((prev) => {
+        const updatedOrders = prev.filter((o) => o._id !== orderId);
 
-      // Recalculate totalSpent
-      const newTotal = updatedOrders.reduce(
-        (sum, o) => sum + (o.totalPrice || 0),
-        0
-      );
-      setTotalSpent(newTotal);
+        // Recalculate totalSpent
+        const newTotal = updatedOrders.reduce(
+          (sum, o) => sum + (o.totalPrice || 0),
+          0
+        );
+        setTotalSpent(newTotal);
 
-      return updatedOrders;
-    });
-  }
-};
+        return updatedOrders;
+      });
+    }
+  };
 
   const handleStatusChange = async (orderId, newStatus) => {
     const updatedOrder = await updateOrderStatus(orderId, newStatus);
@@ -201,16 +201,21 @@ const MessagesPage = ({ authUser }) => {
       );
     }
   };
+  const statusColors = {
+    pending: "yellow",
+    preparing: "blue",
+    completed: "green",
+  };
 
   return (
-    <Box p={{ base: 2, md: 4 }} bg="#000" minH="100vh" color="white">
+    <Box p={{ base: 2, md: 4 }} bgGradient="linear(to-br, #4B226F, #2D0A45)" minH="100vh" color="white">
       <HStack mb={4}>
         <Heading size="lg" flex="1">
           {isAdmin
             ? "All Orders (Admin)"
             : isCaterer
-            ? "All Orders (Caterer)"
-            : "My Orders"}
+              ? "All Orders (Caterer)"
+              : "My Orders"}
         </Heading>
 
         {(isAdmin || isWorker) && (
@@ -257,8 +262,8 @@ const MessagesPage = ({ authUser }) => {
                       order.status === "pending"
                         ? "yellow"
                         : order.status === "preparing"
-                        ? "blue"
-                        : "green"
+                          ? "blue"
+                          : "green"
                     }
                   >
                     {order.status}
@@ -290,16 +295,29 @@ const MessagesPage = ({ authUser }) => {
 
                 {/* Status Edit (Admin & Caterer) */}
                 {(isAdmin || isCaterer) && (
+
+
                   <Select
                     mt={2}
                     size="sm"
                     value={order.status}
                     onChange={(e) => handleStatusChange(order._id, e.target.value)}
+                    bg={`${statusColors[order.status]}.500`}
+                    color="white"
+                    _hover={{ bg: `${statusColors[order.status]}.600` }}
+                    _focus={{ bg: `${statusColors[order.status]}.600` }}
                   >
-                    <option value="pending">Pending</option>
-                    <option value="preparing">Preparing</option>
-                    <option value="completed">Completed</option>
+                    <option style={{ background: "#ECC94B", color: "black" }} value="pending">
+                      Pending
+                    </option>
+                    <option style={{ background: "#4299E1", color: "white" }} value="preparing">
+                      Preparing
+                    </option>
+                    <option style={{ background: "#48BB78", color: "white" }} value="completed">
+                      Completed
+                    </option>
                   </Select>
+
                 )}
 
                 {/* Delete Button (Admin Only) */}

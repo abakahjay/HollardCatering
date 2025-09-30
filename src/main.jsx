@@ -1,53 +1,33 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
-import './index.css';//This is for the styles
-import './main.css';//This is for the styles
-import { ChakraProvider } from "@chakra-ui/react";
-import { extendTheme } from "@chakra-ui/react";
-// import { mode } from "@chakra-ui/theme-tools";
-// import { BrowserRouter } from "react-router-dom";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App.jsx";
+import "./index.css"; // This is for extra styles
+import "./main.css"; // This is for extra styles
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 
-//We can also import React and ReactDOM from the modules above without the curly braises
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').then((registration) => {
-        console.log('Service Worker registered:', registration);
-    }).catch((error) => {
-        console.error('Service Worker registration failed:', error);
-    });
-}
-
-
-// const styles = {
-//   global: (props) => ({
-//     body: {
-//       bg: mode("gray.100", "#000")(props),
-//       color: mode("gray.800", "whiteAlpha.900")(props),
-//     },
-//   }),
-// };
-
-// const config = {
-//   initialColorMode: "dark",
-//   useSystemColorMode: false,
-// };
-
-
+// ✅ Define Hollard theme
 const theme = extendTheme({
     colors: {
         hollard: {
-            purple: "#4B226F",
-            purpleLight: "#6E3C8F",
-            purpleLighter: "#A18EB5",
-            orange: "#F15A24",
-            white: "#FFFFFF"
-        }
+            purple: "#4B226F",       // main background
+            purpleLight: "#6E3C8F",  // hover / card bg
+            purpleLighter: "#A18EB5",// subtle texts / borders
+            orange: "#F15A22",       // main CTA color
+            orangeHover: "#d94e1f",  // darker hover
+            white: "#FFFFFF",
+        },
     },
     styles: {
         global: {
             body: {
-                bg: "hollard.purple",
-                color: "hollard.white",
+                bg: "hollard.purple",  // page background
+                color: "hollard.white",// default text
+                fontFamily: "Arial, sans-serif",
+                // bgGradient="linear(to-br, #4B226F, #2D0A45)" 
+            },
+            a: {
+                color: "hollard.orange",
+                _hover: { color: "hollard.orangeHover" },
             },
         },
     },
@@ -55,14 +35,14 @@ const theme = extendTheme({
         Button: {
             baseStyle: {
                 borderRadius: "xl",
-                fontWeight: "bold"
+                fontWeight: "bold",
             },
             variants: {
                 solid: {
                     bg: "hollard.orange",
                     color: "white",
                     _hover: {
-                        bg: "hollard.purpleLight",
+                        bg: "hollard.orangeHover",
                     },
                 },
                 outline: {
@@ -74,22 +54,58 @@ const theme = extendTheme({
                         color: "white",
                     },
                 },
+                ghost: {
+                    color: "white",
+                    _hover: { bg: "hollard.purpleLight" },
+                },
             },
         },
         Heading: {
             baseStyle: {
                 color: "hollard.orange",
+                fontWeight: "bold",
+            },
+        },
+        Textarea: {
+            baseStyle: {
+                bg: "transparent",
+                border: "1px solid transparent",
+                color: "white",
+                _focus: { borderColor: "hollard.orange" },
+                _placeholder: { color: "hollard.purpleLighter" },
+            },
+        },
+        Input: {
+            baseStyle: {
+                field: {
+                    bg: "transparent",
+                    border: "1px solid transparent",
+                    color: "white",
+                    _focus: { borderColor: "hollard.orange" },
+                    _placeholder: { color: "hollard.purpleLighter" },
+                },
             },
         },
     },
 });
 
-createRoot(document.getElementById('root')).render(
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker
+        .register("/sw.js")
+        .then((registration) => {
+            console.log("Service Worker registered:", registration);
+        })
+        .catch((error) => {
+            console.error("Service Worker registration failed:", error);
+        });
+}
+
+createRoot(document.getElementById("root")).render(
     <StrictMode>
         <ChakraProvider theme={theme}>
-            {/* THis is for Creating Routes and Pages */}
             <App />
         </ChakraProvider>
     </StrictMode>
-)
-console.log('Hello world')
+);
+
+console.log("Hello world");
