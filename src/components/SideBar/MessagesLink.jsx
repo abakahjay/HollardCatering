@@ -7,7 +7,7 @@ const Messages = () => {
     return (
         <Tooltip
             hasArrow
-            label={"Home"}
+            label={"Feedbacks"}
             placement='right'
             ml={1}
             openDelay={500}

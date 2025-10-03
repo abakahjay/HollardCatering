@@ -29,7 +29,9 @@ export default defineConfig({
     }),
   ],
   server: {
-    port: 7007, // Replace 4000 with your desired port
+    port: 7007,
+  host: true,            // 👈 allows access from external hosts
+  allowedHosts: true     // 👈 universal allow (works on newer Vite)
   },
   test: {//This is how we setup the tests
     environment: 'jsdom',

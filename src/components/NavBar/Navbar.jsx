@@ -84,7 +84,7 @@ const Navbar = ({authUser} ) => {
 						<Text
 							fontSize="2xl"
 							whiteSpace="nowrap"
-							bgGradient="linear(to-r, #ce1126, #fcd116, #007940)"
+							bgGradient="linear(to-r, #ce1126,#F15A22, #fcd116)"
 							bgClip="text"
 							fontWeight="bold"
 							mx={2}

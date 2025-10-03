@@ -56,8 +56,8 @@ const useFoodActions = () => {
                 body: JSON.stringify(orderData),
             });
             const data = await res.json();
-
-            if (!res.ok || data.error) throw new Error(data.error || "Failed to create order");
+            // console.log(data)
+            if (!res.ok || data.error) throw new Error(data.error || data.message || "Failed to create order");
             showToast("Success", "Order placed successfully", "success");
             return data.order;
         } catch (err) {
@@ -263,7 +263,8 @@ const useFoodActions = () => {
                 throw new Error(data.error || "Failed to update feedback");
 
             showToast("Success", "Feedback updated successfully", "success");
-            return data; // already populated
+            return data.feedback; // return only the updated feedback
+            // already populated
         } catch (err) {
             showToast("Error", err.message, "error");
             return null;
@@ -271,6 +272,38 @@ const useFoodActions = () => {
             setIsLoading(false);
         }
     };
+
+    // Inside useFoodActions
+    const fetchAdminAnalytics = async () => {
+        setIsLoading(true);
+        try {
+            const res = await fetch(`${apiUrl}/api/v1/foodorders/admin-data`);
+            const data = await res.json();
+            if (!res.ok || data.error) throw new Error(data.error || "Failed to fetch admin analytics");
+            return data;
+        } catch (err) {
+            showToast("Error", err.message, "error");
+            return [];
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const fetchCatererAnalytics = async () => {
+        setIsLoading(true);
+        try {
+            const res = await fetch(`${apiUrl}/api/v1/foodorders/caterer-data`);
+            const data = await res.json();
+            if (!res.ok || data.error) throw new Error(data.error || "Failed to fetch caterer analytics");
+            return data;
+        } catch (err) {
+            showToast("Error", err.message, "error");
+            return [];
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
 
 
     return {
@@ -292,6 +325,9 @@ const useFoodActions = () => {
         createFeedback,
         updateFeedback,
         fetchFeedbacks,
+        // Analytics...
+        fetchAdminAnalytics,
+        fetchCatererAnalytics,
     };
 };
 

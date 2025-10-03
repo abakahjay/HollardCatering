@@ -23,7 +23,7 @@ const theme = extendTheme({
                 bg: "hollard.purple",  // page background
                 color: "hollard.white",// default text
                 fontFamily: "Arial, sans-serif",
-                // bgGradient="linear(to-br, #4B226F, #2D0A45)" 
+                // backgroundImage: "linear-gradient(to bottom right, #4B226F, #2D0A45)",
             },
             a: {
                 color: "hollard.orange",

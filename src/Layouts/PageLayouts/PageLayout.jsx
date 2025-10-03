@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../../components/NavBar/Navbar.jsx";
-import Footer from "../../components/trys/Footer.jsx";
+// import Footer from "../../components/trys/Footer.jsx";
 import { Flex,Box,Spinner } from "@chakra-ui/react";
 import {SideBar} from '../../components/SideBar/SideBar.jsx'
 import { useLocation } from "react-router-dom";

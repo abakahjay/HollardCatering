@@ -1,6 +1,5 @@
-import ChatApp from "./components/ChatApp/ChatAppDemo.jsx";
-import { createBrowserRouter, RouterProvider, Navigate, useNavigate } from 'react-router-dom';
-// import {Homepage} from './pages/Homepage/Homepage'
+/* eslint-disable react-hooks/exhaustive-deps */
+import { createBrowserRouter, RouterProvider, Navigate} from 'react-router-dom';
 import { Authpage } from "./pages/Authpage/Authpage.jsx";
 import PageLayout from "./Layouts/PageLayouts/PageLayout.jsx";
 import { useEffect, useState } from "react";
@@ -11,14 +10,11 @@ import MessagesPage from './pages/Messages/Messages';
 import useLogout from "./hooks/useLogout.js";
 import { Flex, Spinner } from "@chakra-ui/react";
 import useShowToast from "./hooks/useShowToast.js";
-import ChatModal from "./components/Modals/messagesModal.jsx";
-import Try1 from "./components/test/Try1.jsx";
 import Homepage from "./routes/homePage/Homepage.jsx"
 import Dashboard from "./routes/dashboardPage/Dashboard.jsx";
-import ChatPage from "./routes/chatPage/Chatpage1.jsx";
 import FindPage from "./routes/findPage/FindPage.jsx";
 import FeedbackPage from "./routes/FeedbackPage/FeedbackPage";
-import Control from "./pages/ControlElectrical/Control.jsx";
+import DataPage from "./routes/DataPage/DataPage";
 
 export default function App(){
     const showToast = useShowToast()
@@ -41,6 +37,7 @@ export default function App(){
                     setAuthUser(data.user);
                     localStorage.setItem("user-info", JSON.stringify({user:data.user,token:user.token}));
                 } catch (error) {
+                    console.log(error)
                     showToast("Loading",'', "loading",1000);
                 } finally {
                     setLoading(false);
@@ -81,14 +78,6 @@ export default function App(){
             ),
         },
         {
-            path: '/chat',
-            element: (
-                <PageLayout authUser={authUser} onLogout={handleLogout}>
-                    {authUser ? <ChatPage authUser={authUser} onLogout={handleLogout}/> : <Navigate to="/auth" />}
-                </PageLayout>
-            ),
-        },
-        {
             path: '/auth',
             element: (
                 <>
@@ -100,28 +89,10 @@ export default function App(){
             ),
         },
         {
-            path: '/auth/test',//Just for testing
-            element: (
-                <>
-                    <Try1 onAuth={setAuthUser}/>
-                </>
-            ),
-        },
-        {
             path: '/:username',
             element: (
                 <PageLayout authUser={authUser} onLogout={handleLogout}>
                     {authUser ? <ProfilePage authUser={authUser} onLogout={handleLogout} /> : <Navigate to="/auth" onLogout={handleLogout}/>}
-                    {/* <ProfilePage authUser={authUser}  onLogout={handleLogout} /> */}
-                </PageLayout>
-            ),
-        },
-        {
-            path: '/chat/:chatId',
-            element: (
-                <PageLayout authUser={authUser} onLogout={handleLogout}>
-                    {/* {authUser ? <ProfilePage authUser={authUser} onLogout={handleLogout} /> : <Navigate to="/auth" onLogout={handleLogout}/>} */}
-                    {authUser ? <ChatPage authUser={authUser} onLogout={handleLogout}/> : <Navigate to="/auth" />}
                 </PageLayout>
             ),
         },
@@ -142,6 +113,14 @@ export default function App(){
             ),
         },
         {
+            path: '/data',
+            element: (
+                <PageLayout authUser={authUser} onLogout={handleLogout}>
+                    {authUser ? <DataPage authUser={authUser} onLogout={handleLogout} /> : <Navigate to="/auth" onLogout={handleLogout}/>}
+                </PageLayout>
+            ),
+        },
+        {
             path: '/findmeal',
             element: (
                 <PageLayout authUser={authUser} onLogout={handleLogout}>
@@ -153,13 +132,6 @@ export default function App(){
             path: '/',
             element: (
                     <Homepage authUser={authUser} onLogout={handleLogout} />
-            ),
-        },
-        ,
-        {
-            path: '/control',
-            element: (
-                    <Control authUser={authUser} onLogout={handleLogout} />
             ),
         },
     ]);

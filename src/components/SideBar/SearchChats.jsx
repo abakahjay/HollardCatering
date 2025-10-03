@@ -8,7 +8,7 @@ const SearchChats = () => {
   return (
     <Tooltip
       hasArrow
-      label="Search"
+      label="Search Meal"
       placement="right"
       ml={1}
       openDelay={500}

@@ -43,7 +43,7 @@ export function SideBar({ authUser, onLogout }) {
                             cursor="pointer"
                             fontSize="2xl"
                             whiteSpace="nowrap"
-                            bgGradient="linear(to-r, #ce1126, #fcd116, #007940)" // Red → Yellow → Green
+                            bgGradient="linear(to-r, #ce1126,#F15A22, #fcd116)" // Red → Yellow → Green
                             bgClip="text"
                             fontWeight="bold"
                         >

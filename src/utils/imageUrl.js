@@ -1,23 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { fetchImage } from './fetchImage';
+// import React, { useEffect, useState } from 'react';
+// import { fetchImage } from './fetchImage';
 
 
-export const ProfileUrl = (Id) => {
-    const [url, setUrl] = useState({});
-    useEffect(() => {
-        const fetchImages = async () => {
-                try {
-                    const imageURL = await fetchImage(Id);
-                    setUrl(imageURL);
-                } catch (err) {
-                    console.error(err);
-                }
-        };
+// export const ProfileUrl = (Id) => {
+//     const [url, setUrl] = useState({});
+//     useEffect(() => {
+//         const fetchImages = async () => {
+//                 try {
+//                     const imageURL = await fetchImage(Id);
+//                     setUrl(imageURL);
+//                 } catch (err) {
+//                     console.error(err);
+//                 }
+//         };
 
         
-            fetchImages();
-    }, []);
+//             fetchImages();
+//     }, []);
 
-    return url;
+//     return url;
+// };
+
+// utils/imageUrl.js
+export const ProfileUrl = (imageId) => {
+  if (!imageId) return "";
+  const apiUrl = import.meta.env.VITE_API_URL;
+  return `${apiUrl}/api/v1/posts/image/${imageId}`;
 };
-

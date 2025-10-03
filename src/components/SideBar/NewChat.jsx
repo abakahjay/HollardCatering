@@ -47,7 +47,7 @@ const NewChat = () => {
   return (
     <Tooltip
       hasArrow
-      label={"New Chat"}
+      label={"New Order"}
       placement="right"
       ml={1}
       openDelay={500}
