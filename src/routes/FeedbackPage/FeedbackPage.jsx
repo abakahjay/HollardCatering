@@ -201,7 +201,7 @@ export default function FeedbackPage({ authUser }) {
   borderRadius="lg"
   w="100%"
 >
-  {role === "worker" ? (
+  {(role === "worker" || role === "admin") ? (
     <>
       {isEditing ? (
         <>
