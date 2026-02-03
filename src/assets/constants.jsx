@@ -435,3 +435,36 @@ export const DatabaseLogo = () => (
 	</svg>
 );
 
+export const OrderWeeklyLogo = () => (
+	<svg
+		aria-label='Order Weekly'
+		color='rgb(245, 245, 245)'
+		fill='rgb(245, 245, 245)'
+		height='24'
+		role='img'
+		viewBox='0 0 24 24'
+		width='24'
+	>
+		<path
+			d='M7 18c-.55 0-1 .45-1 1v1c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2v-1c0-.55-.45-1-1-1H7zm0-2h10l1.83-8H5.17L7 16zm9-12h-1V3c0-.55-.45-1-1-1h-4c-.55 0-1 .45-1 1v1H8c-1.1 0-2 .9-2 2v1h12V6c0-1.1-.9-2-2-2z'
+			fill='currentColor'
+		></path>
+	</svg>
+);
+
+export const AddMealLogo = () => (
+	<svg
+		aria-label='Add Meal'
+		color='rgb(245, 245, 245)'
+		fill='rgb(245, 245, 245)'
+		height='24'
+		role='img'
+		viewBox='0 0 24 24'
+		width='24'
+	>
+		<path
+			d='M21 19H3c-.55 0-1 .45-1 1s.45 1 1 1h18c.55 0 1-.45 1-1s-.45-1-1-1zM7 14h10c.55 0 1-.45 1-1V6c0-1.1-.9-2-2-2H8C6.9 4 6 4.9 6 6v7c0 .55.45 1 1 1zm4-6h2V6h2v2h2v2h-2v2h-2v-2h-2V8z'
+			fill='currentColor'
+		></path>
+	</svg>
+);

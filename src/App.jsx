@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { createBrowserRouter, RouterProvider, Navigate} from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import { Authpage } from "./pages/Authpage/Authpage.jsx";
 import PageLayout from "./Layouts/PageLayouts/PageLayout.jsx";
 import { useEffect, useState } from "react";
 import useAuthStore from "./store/useAuthStore.js";
 import API from "./utils/api";
-import {ProfilePage} from './pages/ProfilePage/ProfilePage';
+import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 import MessagesPage from './pages/Messages/Messages';
 import useLogout from "./hooks/useLogout.js";
 import { Flex, Spinner } from "@chakra-ui/react";
@@ -15,13 +15,16 @@ import Dashboard from "./routes/dashboardPage/Dashboard.jsx";
 import FindPage from "./routes/findPage/FindPage.jsx";
 import FeedbackPage from "./routes/FeedbackPage/FeedbackPage";
 import DataPage from "./routes/DataPage/DataPage";
+import AddMealPage from "./routes/addMealPage/AddMealPage.jsx";
+import OrderWeeklyPage from "./routes/orderWeeklyPage/OrderWeeklyPage.jsx";
 
-export default function App(){
+
+export default function App() {
     const showToast = useShowToast()
-    const {logout} =useLogout()
-    const authUser= useAuthStore(state=>state.user)
-    const setAuthUser= useAuthStore((state)=>state.setAuthUser)
-    const {user}= useAuthStore();
+    const { logout } = useLogout()
+    const authUser = useAuthStore(state => state.user)
+    const setAuthUser = useAuthStore((state) => state.setAuthUser)
+    const { user } = useAuthStore();
     const [loading, setLoading] = useState(true);
     // console.log(user?.token)
     // Fetch the authenticated user on initial load
@@ -35,10 +38,10 @@ export default function App(){
                         headers: { Authorization: `Bearer ${user?.token}` }
                     });
                     setAuthUser(data.user);
-                    localStorage.setItem("user-info", JSON.stringify({user:data.user,token:user.token}));
+                    localStorage.setItem("user-info", JSON.stringify({ user: data.user, token: user.token }));
                 } catch (error) {
                     console.log(error)
-                    showToast("Loading",'', "loading",1000);
+                    showToast("Loading", '', "loading", 1000);
                 } finally {
                     setLoading(false);
                 }
@@ -49,7 +52,7 @@ export default function App(){
 
         fetchAuthUser();
 
-        return ()=>{//This is a cleanup function
+        return () => {//This is a cleanup function
             controller.abort();
         }
     }, [user, setAuthUser]);
@@ -73,7 +76,7 @@ export default function App(){
             path: '/dashboard',
             element: (
                 <PageLayout authUser={authUser} onLogout={handleLogout}>
-                    {authUser ? <Dashboard authUser={authUser} onLogout={handleLogout}/> : <Navigate to="/auth" />}
+                    {authUser ? <Dashboard authUser={authUser} onLogout={handleLogout} /> : <Navigate to="/auth" />}
                 </PageLayout>
             ),
         },
@@ -84,7 +87,7 @@ export default function App(){
                     <PageLayout>
                         {!authUser ? <Authpage onAuth={setAuthUser} /> : <Navigate to="/" />}
                     </PageLayout>
-                    
+
                 </>
             ),
         },
@@ -92,7 +95,7 @@ export default function App(){
             path: '/:username',
             element: (
                 <PageLayout authUser={authUser} onLogout={handleLogout}>
-                    {authUser ? <ProfilePage authUser={authUser} onLogout={handleLogout} /> : <Navigate to="/auth" onLogout={handleLogout}/>}
+                    {authUser ? <ProfilePage authUser={authUser} onLogout={handleLogout} /> : <Navigate to="/auth" onLogout={handleLogout} />}
                 </PageLayout>
             ),
         },
@@ -100,7 +103,7 @@ export default function App(){
             path: '/history',
             element: (
                 <PageLayout authUser={authUser} onLogout={handleLogout}>
-                    {authUser ? <MessagesPage authUser={authUser} onLogout={handleLogout} /> : <Navigate to="/auth" onLogout={handleLogout}/>}
+                    {authUser ? <MessagesPage authUser={authUser} onLogout={handleLogout} /> : <Navigate to="/auth" onLogout={handleLogout} />}
                 </PageLayout>
             ),
         },
@@ -108,7 +111,7 @@ export default function App(){
             path: '/feedback',
             element: (
                 <PageLayout authUser={authUser} onLogout={handleLogout}>
-                    {authUser ? <FeedbackPage authUser={authUser} onLogout={handleLogout} /> : <Navigate to="/auth" onLogout={handleLogout}/>}
+                    {authUser ? <FeedbackPage authUser={authUser} onLogout={handleLogout} /> : <Navigate to="/auth" onLogout={handleLogout} />}
                 </PageLayout>
             ),
         },
@@ -116,7 +119,7 @@ export default function App(){
             path: '/data',
             element: (
                 <PageLayout authUser={authUser} onLogout={handleLogout}>
-                    {authUser ? <DataPage authUser={authUser} onLogout={handleLogout} /> : <Navigate to="/auth" onLogout={handleLogout}/>}
+                    {authUser ? <DataPage authUser={authUser} onLogout={handleLogout} /> : <Navigate to="/auth" onLogout={handleLogout} />}
                 </PageLayout>
             ),
         },
@@ -124,34 +127,51 @@ export default function App(){
             path: '/findmeal',
             element: (
                 <PageLayout authUser={authUser} onLogout={handleLogout}>
-                    {authUser ? <FindPage authUser={authUser} onLogout={handleLogout} /> : <Navigate to="/auth" onLogout={handleLogout}/>}
+                    {authUser ? <FindPage authUser={authUser} onLogout={handleLogout} /> : <Navigate to="/auth" onLogout={handleLogout} />}
                 </PageLayout>
             ),
         },
         {
             path: '/',
             element: (
-                    <Homepage authUser={authUser} onLogout={handleLogout} />
+                <Homepage authUser={authUser} onLogout={handleLogout} />
             ),
         },
+        {
+            path: '/add-meal',
+            element: (
+                <PageLayout authUser={authUser} onLogout={handleLogout}>
+                    {authUser ? <AddMealPage authUser={authUser} onLogout={handleLogout} /> : <Navigate to="/auth" />}
+                </PageLayout>
+            ),
+        },
+        {
+            path: '/order-weekly',
+            element: (
+                <PageLayout authUser={authUser} onLogout={handleLogout}>
+                    {authUser ? <OrderWeeklyPage authUser={authUser} onLogout={handleLogout} /> : <Navigate to="/auth" />}
+                </PageLayout>
+            ),
+        },
+
     ]);
 
 
 
-    
+
 
     return <>
-            {/* This is for Creating Routes and Pages */}
-            <RouterProvider router={router} />
-            {/* <ChatApp userId={'67886226f65d5209b0836659'} recipientId={'67886bde4f9166876c734a8c'}/> */}
-        </>
+        {/* This is for Creating Routes and Pages */}
+        <RouterProvider router={router} />
+        {/* <ChatApp userId={'67886226f65d5209b0836659'} recipientId={'67886bde4f9166876c734a8c'}/> */}
+    </>
 }
 
 
 const PageLayoutSpinner = () => {
-	return (
-		<Flex flexDir='column' h='100vh' alignItems='center' justifyContent='center'>
-			<Spinner size='xl' />
-		</Flex>
-	);
+    return (
+        <Flex flexDir='column' h='100vh' alignItems='center' justifyContent='center'>
+            <Spinner size='xl' />
+        </Flex>
+    );
 };

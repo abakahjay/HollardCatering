@@ -10,6 +10,8 @@ import NewChat from "./NewChat";
 import SearchChats from "./SearchChats";
 import HistoryLink from "./HistoryLink"
 import DataPageLink from "./DataPageLink"
+import OrderWeeklyLink from "./OrderWeeklyLink";
+import AddMealLink from "./AddMealLink";
 
 const SidebarItems = ({authUser,onLogout}) => {
 	const user=authUser.user?authUser.user:authUser
@@ -35,6 +37,8 @@ const SidebarItems = ({authUser,onLogout}) => {
 			<Search authUser={authUser} onLogout={onLogout}/>
 			<CreatePost authUser={authUser} onLogout={onLogout}/>
 			<Messages authUser={authUser} onLogouot={onLogout}/> */}
+			<OrderWeeklyLink authUser={authUser} onLogout={onLogout}/>
+			<AddMealLink authUser={authUser} onLogout={onLogout}/>
 			<Messages authUser={authUser} onLogouot={onLogout}/>
 			{(isAdmin || isCaterer) &&<DataPageLink authUser={authUser} onLogouot={onLogout}/>}
 			<ProfileLink authUser={authUser} onLogout={onLogout} />

@@ -29,7 +29,7 @@ export default defineConfig({
     }),
   ],
   server: {
-    port: 7007,
+    port: 7003,
   host: true,            // 👈 allows access from external hosts
   allowedHosts: true     // 👈 universal allow (works on newer Vite)
   },
